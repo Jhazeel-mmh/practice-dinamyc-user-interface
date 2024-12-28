@@ -82,6 +82,14 @@ ul {
   top: 45%;
 }
 
+#next::after {
+  content: ">";
+}
+
+#prev::after {
+  content: "<";
+}
+
 #prev {
   position: absolute;
   top: 45%;
