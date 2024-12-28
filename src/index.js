@@ -11,107 +11,133 @@ function setDropdown(trigger, c, cls) {
   dropdown.addEventListener("click", () => {
     content.classList.toggle(cls);
   });
-};
+}
 
 setDropdown(".dropdown", ".content", "hidden");
- 
-const createCarrousel = function(selector){
-    const images = [];
-    let currentIndex = 0;
 
-    function getImages(){
-        return images;
-    };
+const createCarrousel = function (selector, btnsOfSlides) {
+  const images = [];
+  let currentIndex = 0;
 
-    function setImages(s){
-        let elements = $$(s);
-        elements.forEach((element, index) => {
-            images.push(element.id);
-            element.style.visibility = index === currentIndex ? "visible" : "hidden";
-        });
-    }; 
+  function getImages() {
+    return images;
+  }
 
-    function setVisibility(){
-        images.forEach((id, index) => {
-            let element = $("#" + id);
-            element.style.visibility = index === currentIndex ? "visible" : "hidden";
-        });
-    };
+  function getCurrentIndex() {
+    return currentIndex;
+  }
 
-    function next(){
-        currentIndex = (currentIndex + 1) % images.length; 
-        setVisibility();
-    };
+  function slideChangue() {
+    let nodes = $$(btnsOfSlides);
+    nodes.forEach((node, index) => {
+      if (index === getCurrentIndex()) {
+        node.style.backgroundColor = "#aaaaaa";
+        return;
+      }
+      node.style.backgroundColor = "#ffffff";
+    });
+  }
 
-    function prev(){
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        setVisibility();
-    }5
+  function setImages(s) {
+    let elements = $$(s);
+    elements.forEach((element, index) => {
+      images.push(element.id);
+      element.style.visibility = index === currentIndex ? "visible" : "hidden";
+    });
+  }
 
-    function setCurrentIndex(index){
-        if(index >= 0 && index < images.length){
-            currentIndex = index;
-            setVisibility();
-        }
-    };
+  function setVisibility() {
+    images.forEach((id, index) => {
+      let element = $("#" + id);
+      element.style.visibility = index === currentIndex ? "visible" : "hidden";
+    });
+    slideChangue();
+  }
 
-    function setCurrentIndexByKey(key){
-        images.forEach((img, index) => {
-            if (img == key){
-                currentIndex = index;
-            }
-        });
-        setVisibility();
-    };
+  function next() {
+    currentIndex = (currentIndex + 1) % images.length;
+    setVisibility();
+  }
 
-    function changueSlides(){
-        setInterval(() => {
-            next();
-        }, 3000);
-    };
+  function prev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    setVisibility();
+  }
+  5;
 
-    setImages(selector);
-    changueSlides()
+  function setCurrentIndex(index) {
+    if (index >= 0 && index < images.length) {
+      currentIndex = index;
+      setVisibility();
+    }
+  }
 
-    return {
-        getImages, 
-        setCurrentIndex,
-        setCurrentIndexByKey,
-        next,
-        prev
-    };
+  function setCurrentIndexByKey(key) {
+    images.forEach((img, index) => {
+      if (img == key) {
+        currentIndex = index;
+      }
+    });
+    setVisibility();
+  }
+
+  function changueSlides() {
+    setInterval(() => {
+      next();
+    }, 3000);
+  }
+
+  setImages(selector);
+  changueSlides();
+
+  return {
+    getImages,
+    getCurrentIndex,
+    setCurrentIndex,
+    setCurrentIndexByKey,
+    next,
+    prev,
+    slideChangue,
+  };
 };
 
-
-
-let carrousel = createCarrousel(".picture-frame");
+let carrousel = createCarrousel(".picture-frame", ".buttons > button");
 
 console.log(carrousel.getImages());
 
+const carrrouselDomControl = function (
+  selectorSlides,
+  selectorNext,
+  selectorPrev,
+  carrouselObj,
+) {
+  function setControls(select) {
+    let btns = $$(select);
+    btns.forEach((btn, index) => {
+      btn.addEventListener("click", (event) => {
+        setSlide(event, index);
+      });
+    });
+  }
 
-const carrrouselDomControl =  function(selectorSlides, selectorNext, selectorPrev, carrouselObj){
-    function setControls(select){
-        let btns = $$(select);
-        btns.forEach((btn, index) =>{
-            btn.addEventListener("click", (event) => {
-                setSlide(event, index)
-            });
-        })
-    };
+  function setSlide(e, index) {
+    let targetId = e.target.id;
+    targetId = targetId.replace("slides-", "");
+    carrouselObj.setCurrentIndex(index);
+  }
 
-    function setSlide(e, index){
-        let targetId = e.target.id;
-        targetId = targetId.replace("slides-", "");
-        carrouselObj.setCurrentIndex(index)
-    }  
+  function setNextAndPrevControls(n, p) {
+    $(n).addEventListener("click", carrouselObj.next);
+    $(p).addEventListener("click", carrouselObj.prev);
+  }
 
-    function setNextAndPrevControls(n, p){
-        $(n).addEventListener("click", carrouselObj.next);
-        $(p).addEventListener("click", carrouselObj.prev)
-    };
-
-    setNextAndPrevControls(selectorNext, selectorPrev);
-    setControls(selectorSlides)
+  setNextAndPrevControls(selectorNext, selectorPrev);
+  setControls(selectorSlides);
 };
 
-const carrouselDOM = carrrouselDomControl(".buttons > button", "#next", "#prev", carrousel);
+const carrouselDOM = carrrouselDomControl(
+  ".buttons > button",
+  "#next",
+  "#prev",
+  carrousel,
+);

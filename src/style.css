@@ -41,6 +41,7 @@ ul {
     width: 80vw;
     flex-flow: column;
     padding: 2rem;
+    position: relative;
 }
 
 .frames {
@@ -64,5 +65,24 @@ ul {
 
 .buttons button {
   width: 1rem;
-  height: auto;
+  height: 1rem;
+  border: solid #000000 1px;
+  border-radius: 100%;
+}
+
+#next, #prev {
+  border-radius: 100%;
+  font-weight: 700;
+  border: none;
+}
+
+#next {
+  position: absolute;
+  left: 95%;
+  top: 45%;
+}
+
+#prev {
+  position: absolute;
+  top: 45%;
 }
