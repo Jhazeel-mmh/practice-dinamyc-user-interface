@@ -1,3 +1,68 @@
 body {
-    background-color: black;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-container {
+  width: 5rem;
+  justify-content: center;
+}
+
+.dropdown {
+  width: 100%;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.content {
+  list-style-type: none;
+}
+
+ul[class="content"] li {
+    border: solid #000000 1px;
+    text-align: center;
+}
+
+ul {
+  padding: 0;
+}
+
+.carrousel {
+    border: solid #000000 1px;
+    display: flex;
+    width: 80vw;
+    flex-flow: column;
+    padding: 2rem;
+}
+
+.frames {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.picture-frame {
+    width: 50%;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.buttons button {
+  width: 1rem;
+  height: auto;
 }
